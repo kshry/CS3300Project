@@ -1,24 +1,35 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @character.name %>
-</p>
+<div class="container-fluid">
+  <div class = "d-flex flex-row justify-content-center bg-primary bg-gradient rounded-top">
+    <div class= "p-2 text-light fs-2 fw-bold text-uppercase">
+      <%= @character.name %>
+    </div>
+  </div>
 
-<p>
-  <strong>Character class:</strong>
-  <%= @character.character_class %>
-</p>
+  <div class= "d-flex flex-row justify-content-evenly border border-primary border-2 rounded-bottom">
+    <div class= "p-2">
+      <strong>Character class:</strong>
+      <%= @character.character_class %>
+    </div>
 
-<p>
-  <strong>Level:</strong>
-  <%= @character.level %>
-</p>
+    <div class="p-2">
+      <strong>Level:</strong>
+      <%= @character.level %>
+    </div>
+  </div>
 
-<p>
-  <strong>Description:</strong>
-  <%= @character.description %>
-</p>
-
-<%= link_to 'Edit', edit_character_path(@character) %> |
-<%= link_to 'Back', characters_path %>
+  <div class="d-flex flex-row justify-content-center text-light bg-dark bg-gradient rounded-top">
+    <div class= "h3 text-center"><strong>Description</strong></div>
+  </div>
+  <div class="d-flex flex-row justify-content-evenly bg-light bg-gradient border border-2 rounded-bottom"
+    <div class= "p-2 text-wrap fs-4">
+      <%= @character.description %>
+    </div>
+  </div>
+</div>
+<br>
+<div class="d-flex flex-row justify-content-evenly">
+<%= link_to 'Edit', edit_character_path(@character), class: 'btn btn-info', style: "color:white" %>
+<%= link_to 'Back', characters_path, class: 'btn btn-secondary', style: "color:white" %>
+</div>
