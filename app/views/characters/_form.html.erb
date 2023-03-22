@@ -11,27 +11,42 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+  <div class="container-fluid">
+    <div class="field">
+      <%= form.label :name, class: "form-label" %>
+      <%= form.text_field :name, class:"form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :character_class %>
-    <%= form.text_field :character_class %>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="field">
+          <%= form.label :character_class, class: "form-label" %>
+          <%= form.text_field :character_class, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="field">
+          <%= form.label :level, class:"form-label" %>
+          <%= form.number_field :level, class:"form-control" %>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :level %>
-    <%= form.number_field :level %>
+  <div class="container-fluid justify-content-center">
+    <div class="field">
+      <%= form.label :description, class: "form-label" %>
+      <%= form.text_area :description, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
+  <div class="d-flex flex-row justify-content-center"
+    <div class="actions">
+      <%= form.submit "Submit", class: "btn btn-success" %>
+    </div>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
 <% end %>
