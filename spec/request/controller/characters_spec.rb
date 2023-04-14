@@ -9,7 +9,7 @@ RSpec.describe "/characters", type: :request do
         {name: "Guy", character_class:"Fighter", level: -3, description: "This is a fighter"}
     }
   
-    before(:each) do
+    before do
         user = FactoryBot.create(:user)
         # user.confirm! # Or set a confirmed_at inside the factory. Only necessary if you are using the "confirmable" module
         sign_in user
@@ -46,6 +46,34 @@ RSpec.describe "/characters", type: :request do
       end
     end
 
+    describe "POST /create" do
+      context "with valid parameters" do
+        it "creates a new character" do
+          character = Character.create! valid_attributes
+          expect {
+            post characters_url, params: { character: valid_attributes }
+          }.to change(Character, :count).by(1)
+        end
+  
+        it "redirects to the created character" do
+          post characters_url, params: { character: valid_attributes }
+          expect(response).to redirect_to(character_url(Character.last))
+        end
+      end
+  
+      context "with invalid parameters" do
+        it "does not create a new character" do
+          expect {
+            post characters_url, params: { character: invalid_attributes }
+          }.to change(Character, :count).by(0)
+        end
+  
+        it "does not process the character" do
+          post characters_url, params: { character: invalid_attributes }
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
+    end
   
     describe "PATCH /update" do
       context "with valid parameters" do
@@ -70,10 +98,24 @@ RSpec.describe "/characters", type: :request do
           expect(response).to redirect_to(character_url(character))
         end
       end
+      context "with invalid parameters" do
+        it "to not process the character" do
+          character = Character.create! valid_attributes
+          patch character_url(character), params: { character: invalid_attributes }
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
   
     end
   
     describe "DELETE /destroy" do  
+      it "destroys the requested character" do
+        character = Character.create! valid_attributes
+        expect {
+          delete character_url(character)
+        }.to change(Character, :count).by(-1)
+      end
+
       it "redirects to the characters list" do
         character = Character.create! valid_attributes
         delete character_url(character)
