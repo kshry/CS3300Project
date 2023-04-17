@@ -4,12 +4,13 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: 'tghastings/code-esaas'
+      - image: circleci/ruby:3.0.2-node-browsers
     steps:
       - checkout
       - run:
           name: rspec
-          command: sed -i 's/ruby "[0-9].[0-9].[0-9]"/ruby "3.0.2"/' Gemfile && bundle install && bundle exec rake db:migrate RAILS_ENV=test && bundle exec rspec
+          command: sed -i 's/ruby "[0-9].[0-9].[0-9]"/ruby "3.0.2"/' Gemfile && bundle install && bundle exec rake db:migrate RAILS_ENV=test && yarn install && bundle exec rake webpacker:compile && bundle exec rspec
+          enviroment: NODE_ENV=: test
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
