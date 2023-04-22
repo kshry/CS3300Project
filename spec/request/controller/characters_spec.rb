@@ -6,18 +6,16 @@ RSpec.describe "/characters", type: :request do
     }
   
     let(:invalid_attributes) {
-        {name: "Guy", character_class:"Fighter", level: -3, description: "This is a fighter"}
-    }
-  
+        {name: "Guy", character_class:"Fighter", level: -3, description: "This is a fighter"} }
+
     before do
-        user = FactoryBot.create(:user)
-        # user.confirm! # Or set a confirmed_at inside the factory. Only necessary if you are using the "confirmable" module
-        sign_in user
-      end
+      @user = FactoryBot.create(:user)
+      sign_in @user
+    end
 
     describe "GET /index" do
       it "renders a successful response" do
-        Character.create! valid_attributes
+        character = Character.new(valid_attributes)
         get characters_url
         expect(response).to be_successful
       end
@@ -25,7 +23,7 @@ RSpec.describe "/characters", type: :request do
   
     describe "GET /show" do
       it "renders a successful response" do
-        character = Character.create! valid_attributes
+        character = @user.characters.create! (valid_attributes)
         get character_url(character)
         expect(response).to be_successful
       end
@@ -40,16 +38,17 @@ RSpec.describe "/characters", type: :request do
   
     describe "GET /edit" do
       it "render a successful response" do
-        character = Character.create! valid_attributes
+        character = @user.characters.create! valid_attributes
         get edit_character_url(character)
         expect(response).to be_successful
       end
+      
     end
 
     describe "POST /create" do
       context "with valid parameters" do
         it "creates a new character" do
-          character = Character.create! valid_attributes
+          character = @user.characters.create! valid_attributes
           expect {
             post characters_url, params: { character: valid_attributes }
           }.to change(Character, :count).by(1)
@@ -82,7 +81,7 @@ RSpec.describe "/characters", type: :request do
         }
   
         it "updates the requested character" do
-          character = Character.create! valid_attributes
+          character = @user.characters.create! valid_attributes
           patch character_url(character), params: { character: new_attributes }
           character.reload
           expect(character.name).to eq("Gary")
@@ -92,7 +91,7 @@ RSpec.describe "/characters", type: :request do
         end
   
         it "redirects to the character" do
-          character = Character.create! valid_attributes
+          character = @user.characters.create! valid_attributes
           patch character_url(character), params: { character: new_attributes }
           character.reload
           expect(response).to redirect_to(character_url(character))
@@ -100,7 +99,7 @@ RSpec.describe "/characters", type: :request do
       end
       context "with invalid parameters" do
         it "to not process the character" do
-          character = Character.create! valid_attributes
+          character = @user.characters.create! valid_attributes
           patch character_url(character), params: { character: invalid_attributes }
           expect(response).to have_http_status(:unprocessable_entity)
         end
@@ -110,14 +109,14 @@ RSpec.describe "/characters", type: :request do
   
     describe "DELETE /destroy" do  
       it "destroys the requested character" do
-        character = Character.create! valid_attributes
+        character = @user.characters.create! valid_attributes
         expect {
           delete character_url(character)
         }.to change(Character, :count).by(-1)
       end
 
       it "redirects to the characters list" do
-        character = Character.create! valid_attributes
+        character = @user.characters.create! valid_attributes
         delete character_url(character)
         expect(response).to redirect_to(characters_url)
       end

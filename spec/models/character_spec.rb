@@ -1,6 +1,8 @@
 
 require "rails_helper"
 
+
+
 describe "character Attribute Requirements on Create", :type => :model do
     let(:valid_attributes)  {{name: "Guy", character_class:"Fighter", level: 12, description: "This is a fighter"}}
     let(:missing_name) {{character_class:"Fighter", level: 12, description: "This is a fighter"}}
@@ -8,29 +10,31 @@ describe "character Attribute Requirements on Create", :type => :model do
     let(:invalid_level) {{name: "Guy", character_class:"Fighter", level: -3, description: "This is a fighter"}}
     let(:missing_level) {{name: "Guy", character_class:"Fighter", description: "This is a fighter"}}
     let(:empty_description) {{name: "Guy", character_class:"Fighter", level: 12}}
+    #there are problems using factorybot I don't have time to debug. user3 is just a fixture at this point
+    user= FactoryBot.build(:user3)
   context "validation tests" do
     it "ensures the name is present when creating character" do
-      character = Character.new(missing_name)
+      character = user.characters.new(missing_name)
       expect(character.valid?).to eq(false)
     end
     it "should not be able to save character when class missing" do
-      character = Character.new(missing_class)
+      character = user.characters.new(missing_class)
       expect(character.save).to eq(false)
     end
     it "should not be able to save character when level below 0" do
-        character = Character.new(invalid_level)
+        character = user.characters.new(invalid_level)
         expect(character.save).to eq(false)
       end
     it "should not be able to save character without a level" do
-        character = Character.new(missing_level)
+        character = user.characters.new(missing_level)
         expect(character.save).to eq(false)
       end
     it "should be able to save character with name, title, level, but no description" do
-        character = Character.new(empty_description)
+        character = user.characters.new(empty_description)
         expect(character.save).to eq(true)
       end
     it "should be able to save character with name, title, level, and description" do
-      character = Character.new(valid_attributes)
+      character = user.characters.new(valid_attributes)
       expect(character.save).to eq(true)
     end
   end

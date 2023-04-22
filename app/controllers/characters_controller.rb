@@ -23,7 +23,7 @@ class CharactersController < ApplicationController
 
   # POST /characters or /characters.json
   def create
-    @character = current_user.character.new(character_params)
+    @character = current_user.characters.build(character_params)
 
     respond_to do |format|
       if @character.save
@@ -67,7 +67,7 @@ class CharactersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def character_params
-      params.require(:character).permit(:name, :character_class, :level, :description)
+      params.require(:character).permit(:name, :character_class, :level, :description, :user_id)
     end
 
     def authorize_user
