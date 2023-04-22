@@ -1,6 +1,7 @@
 class CharactersController < ApplicationController
   before_action :set_character, only: %i[ show edit update destroy ]
   before_action :authenticate_user!, only: %i[ new edit create update destroy]
+  before_action :authorize_user, only: [:update, :edit, :destroy]
 
   # GET /characters or /characters.json
   def index
@@ -13,7 +14,7 @@ class CharactersController < ApplicationController
 
   # GET /characters/new
   def new
-    @character = Character.new
+    @character = current_user.characters.build
   end
 
   # GET /characters/1/edit
@@ -22,7 +23,7 @@ class CharactersController < ApplicationController
 
   # POST /characters or /characters.json
   def create
-    @character = Character.new(character_params)
+    @character = current_user.character.new(character_params)
 
     respond_to do |format|
       if @character.save
@@ -67,5 +68,11 @@ class CharactersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def character_params
       params.require(:character).permit(:name, :character_class, :level, :description)
+    end
+
+    def authorize_user
+      unless @character.user == current_user
+        redirect_to characters_path, notice: 'This is not your character!'
+      end
     end
 end
