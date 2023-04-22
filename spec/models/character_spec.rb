@@ -11,7 +11,7 @@ describe "character Attribute Requirements on Create", :type => :model do
     let(:missing_level) {{name: "Guy", character_class:"Fighter", description: "This is a fighter"}}
     let(:empty_description) {{name: "Guy", character_class:"Fighter", level: 12}}
     #there are problems using factorybot I don't have time to debug. user3 is just a fixture at this point
-    user= FactoryBot.build(:user3)
+    user = FactoryBot.create(:user3)
   context "validation tests" do
     it "ensures the name is present when creating character" do
       character = user.characters.new(missing_name)
