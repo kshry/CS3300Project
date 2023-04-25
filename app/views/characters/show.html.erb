@@ -30,6 +30,8 @@
 </div>
 <br>
 <div class="d-flex flex-row justify-content-evenly">
+  <% if user_signed_in? && current_user.id == @character.user_id %>
   <%= link_to 'Edit this character', edit_character_path(@character), class: 'btn btn-info', style: "color:white" %>
+  <% end %>
   <%= link_to 'Back to Character List', characters_path, class: 'btn btn-secondary', style: "color:white" %>
 </div>
